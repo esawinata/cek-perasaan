@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Cek Perasaan Kamu</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fffaf5;
+      color: #333;
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #cc6a5d;
+    }
+    .note {
+      background-color: #fff0eb;
+      padding: 15px;
+      border-left: 5px solid #cc6a5d;
+      margin-bottom: 25px;
+      border-radius: 5px;
+    }
+    .question {
+      margin-bottom: 25px;
+    }
+    textarea {
+      width: 100%;
+      height: 60px;
+      margin-top: 5px;
+    }
+    button {
+      background-color: #cc6a5d;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    #result {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #fff0eb;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Puti Mahira Feeling Checker  💖</h1>
+
+<div class="note">
+  <strong>Catatan:</strong> Jawab setiap pertanyaan dengan skala <strong>1 sampai 5</strong>, ya!
+  <ul>
+    <li><strong>1 = Sangat Tidak Setuju / Tidak Sama Sekali</strong></li>
+    <li><strong>3 = Netral / Kadang-kadang</strong></li>
+    <li><strong>5 = Sangat Setuju / Selalu</strong></li>
+  </ul>
+  Jawab sejujur dan setulus mungkin 💌
+</div>
+
+<form id="feelingForm">
+
+  <div class="question">
+    <label>1. Aku merasa bahagia dalam beberapa hari terakhir</label><br>
+    <input type="number" name="q1" min="1" max="5" required>
+    <textarea name="d1" placeholder="Ceritain sedikit kenapa kamu jawab begitu..."></textarea>
+  </div>
+
+  <div class="question">
+    <label>2. Aku merasa punya energi untuk menjalani hari</label><br>
+    <input type="number" name="q2" min="1" max="5" required>
+    <textarea name="d2" placeholder="Kenapa kamu bisa merasa begitu?"></textarea>
+  </div>
+
+  <div class="question">
+    <label>3. Aku merasa didengarkan dan dimengerti</label><br>
+    <input type="number" name="q3" min="1" max="5" required>
+    <textarea name="d3" placeholder="Ada yang bikin kamu merasa begitu/tidak?"></textarea>
+  </div>
+
+  <div class="question">
+    <label>4. Aku tidur dengan cukup dan nyenyak</label><br>
+    <input type="number" name="q4" min="1" max="5" required>
+    <textarea name="d4" placeholder="Gimana kualitas tidurmu belakangan?"></textarea>
+  </div>
+
+  <div class="question">
+    <label>5. Aku bisa mengatur emosi dan nggak gampang meledak</label><br>
+    <input type="number" name="q5" min="1" max="5" required>
+    <textarea name="d5" placeholder="Ceritain dikit soal emosi kamu akhir-akhir ini..."></textarea>
+  </div>
+
+  <button type="submit">Lihat Hasil 💌</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+  document.getElementById('feelingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const data = {
+      timestamp: new Date().toISOString(),
+      q1: document.querySelector('[name="q1"]').value,
+      d1: document.querySelector('[name="d1"]').value,
+      q2: document.querySelector('[name="q2"]').value,
+      d2: document.querySelector('[name="d2"]').value,
+      q3: document.querySelector('[name="q3"]').value,
+      d3: document.querySelector('[name="d3"]').value,
+      q4: document.querySelector('[name="q4"]').value,
+      d4: document.querySelector('[name="d4"]').value,
+      q5: document.querySelector('[name="q5"]').value,
+      d5: document.querySelector('[name="d5"]').value
+    };
+
+    const scores = [
+      parseInt(data.q1),
+      parseInt(data.q2),
+      parseInt(data.q3),
+      parseInt(data.q4),
+      parseInt(data.q5)
+    ];
+
+    const totalScore = scores.reduce((a, b) => a + b, 0);
+    const kredit = 5 + Math.floor((15 - 5) * (1 - (totalScore / 25)));
+
+    const funFactsList = [
+      [
+        "Sedikit bahagia juga tetap bahagia. Coba inget satu hal manis hari ini yang bisa bikin kamu tersenyum 😊",
+        "Kamu punya potensi buat bahagia lebih sering, mungkin mulai dari hal-hal kecil seperti makanan favorit 🍜",
+        "Wah! Kamu lagi menikmati momen-momen kecil ya, terusin ya! 🌈"
+      ],
+      [
+        "Kalau capek, jangan lupa kasih jeda ke diri sendiri. Kamu juga manusia, bukan mesin 💆",
+        "Energi naik turun itu wajar. Kadang rebahan juga bentuk perawatan diri kok 🛋️",
+        "Semangat kamu keliatan loh! Terus jaga energimu, tapi jangan lupa istirahat juga ya 🔋"
+      ],
+      [
+        "Rasa nggak didengar tuh nyesek ya. Tapi kamu nggak sendiri kok cantikku 💗 Setelah kamu siap kamu bisa ceritain.",
+        "Mungkin kamu udah mulai nemu orang-orang yang bisa ngerti kamu ya? Yuk terus terbuka 💬 Katanya kalo makin terbuka ke pacar dapet pahala loh!",
+        "Senangnya! Berarti kamu dikelilingi orang baik. Pertahankan hubungan yang bikin hati hangat 🤝"
+      ],
+      [
+        "Kalau susah tidur, coba matikan HP 30 menit sebelum tidur, bantu banget loh 🌙",
+        "Tidur udah lumayan oke? Coba rutinin jamnya biar makin segar pas bangun ☀️",
+        "GG! Tidur kamu bagus berarti kamu sayang sama tubuhmu juga 🛌✨"
+      ],
+      [
+        "Kalau lagi emosian, tarik napas dulu ya... habis itu kamu bisa luapin sama aku 😌",
+        "Makin stabil tuh tanda kamu berkembang. Good job sayang! 💪",
+        "Wow, kamu keren! Bisa kelola emosi itu nggak gampang loh. Proud of you bby! 🎉"
+      ]
+    ];
+
+    let funFact = "<h3>✨ Catatan Kecil Buat Kamu:</h3><ul>";
+    for (let i = 0; i < scores.length; i++) {
+      const level = Math.min(Math.max(scores[i], 1), 5);
+      const factIndex = level <= 2 ? 0 : level === 3 ? 1 : 2;
+      funFact += `<li>${funFactsList[i][factIndex]}</li>`;
+    }
+    funFact += "</ul>";
+
+    let analysis = "<h2>💖 Hasil Perasaan Kamu:</h2>";
+    if (totalScore <= 10) {
+      analysis += "<p>Sepertinya kamu lagi banyak beban, ya... Nggak apa-apa banget kok. Coba pelan-pelan kasih ruang buat diri kamu sendiri. Sini cayang aku peluk! 🤗</p>";
+    } else if (totalScore <= 15) {
+      analysis += "<p>Emosimu masih naik turun, tapi itu wajar banget. Jangan terlalu keras ke diri sendiri ya. Kamu lagi belajar dan itu keren! 🌱</p>";
+    } else {
+      analysis += "<p>Kamu terlihat cukup stabil dan sadar akan perasaanmu sendiri. Terus jaga keseimbangan itu ya. Kamu udah sejauh ini, hebat banget! 🌟</p>";
+    }
+
+    fetch("https://sheetdb.io/api/v1/yb8pdvq7givs8", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        data: { 
+          ...data, 
+          kredit: kredit
+        }
+      })
+    })
+    .then(response => response.json())
+    .then(result => {
+      let resultText = analysis + "<p>💌 Love Points kamu saat ini: <strong>" + kredit + "</strong></p>";
+
+      if (kredit >= 50) {
+        resultText += "<p>🎉 Yeay! Kamu bisa klaim reward spesial karena udah ngumpulin 50 love points! 🎁</p>";
+      } else {
+        resultText += "<p>💖 Yuk semangat terus biar bisa kumpulin 50 love points dan dapetin hadiah kejutan dari semesta!</p>";
+      }
+
+      document.getElementById('result').innerHTML = resultText + funFact;
+    })
+    .catch(error => {
+      alert("Oops! Ada kesalahan waktu nyimpen data. Coba lagi nanti ya 🥺");
+    });
+  });
+</script>
+
+</body>
+</html>
