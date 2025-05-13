@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Cek Perasaan Kamu</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fffaf5;
+      color: #333;
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #cc6a5d;
+    }
+    .question {
+      margin-bottom: 25px;
+    }
+    textarea {
+      width: 100%;
+      height: 60px;
+      margin-top: 5px;
+    }
+    input[type=number] {
+      width: 60px;
+      padding: 5px;
+    }
+    button {
+      background-color: #cc6a5d;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    #result {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #fff0eb;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Cek Perasaan Kamu Akhir-Akhir Ini</h1>
+<form id="feelingForm">
+
+  <div class="question">
+    <label>1. Aku merasa bahagia dalam beberapa hari terakhir (1 = Tidak, 5 = Sangat Bahagia)</label><br>
+    <input type="number" name="q1" min="1" max="5" required>
+    <textarea name="d1" placeholder="Ceritain sedikit kenapa kamu jawab begitu..."></textarea>
+  </div>
+
+  <div class="question">
+    <label>2. Aku merasa punya energi untuk menjalani hari (1 = Sangat Lelah, 5 = Sangat Berenergi)</label><br>
+    <input type="number" name="q2" min="1" max="5" required>
+    <textarea name="d2" placeholder="Kenapa kamu bisa merasa begitu?"></textarea>
+  </div>
+
+  <div class="question">
+    <label>3. Aku merasa didengarkan dan dimengerti (1 = Tidak Sama Sekali, 5 = Sangat Dimengerti)</label><br>
+    <input type="number" name="q3" min="1" max="5" required>
+    <textarea name="d3" placeholder="Ada yang bikin kamu merasa begitu/tidak?"></textarea>
+  </div>
+
+  <div class="question">
+    <label>4. Aku tidur dengan cukup dan nyenyak (1 = Sangat Kurang, 5 = Sangat Cukup)</label><br>
+    <input type="number" name="q4" min="1" max="5" required>
+    <textarea name="d4" placeholder="Gimana kualitas tidurmu belakangan?"></textarea>
+  </div>
+
+  <div class="question">
+    <label>5. Aku bisa mengatur emosi dan nggak gampang meledak (1 = Sangat Sulit, 5 = Sangat Terkontrol)</label><br>
+    <input type="number" name="q5" min="1" max="5" required>
+    <textarea name="d5" placeholder="Ceritain dikit soal emosi kamu akhir-akhir ini..."></textarea>
+  </div>
+
+  <button type="submit">Lihat Hasil</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+  document.getElementById('feelingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const scores = [
+      parseInt(document.querySelector('[name="q1"]').value),
+      parseInt(document.querySelector('[name="q2"]').value),
+      parseInt(document.querySelector('[name="q3"]').value),
+      parseInt(document.querySelector('[name="q4"]').value),
+      parseInt(document.querySelector('[name="q5"]').value)
+    ];
+
+    const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
+
+    let resultText = "<h2>Hasil Analisis Kamu:</h2>";
+
+    if (avg < 2.5) {
+      resultText += "<p>Sepertinya kamu sedang menghadapi hari-hari yang berat. Ingat, nggak apa-apa merasa lelah. Yang penting, kamu nggak sendirian, dan ada jalan keluar dari ini semua.</p>";
+    } else if (avg <= 3.5) {
+      resultText += "<p>Perasaanmu cukup stabil. Kadang naik turun itu wajar. Tetap perhatikan hal-hal kecil yang bisa bantu kamu merasa lebih baik.</p>";
+    } else {
+      resultText += "<p>Wah, kamu terlihat cukup seimbang dan punya energi positif! Tetap jaga ritme ini, ya. Tapi jangan lupa istirahat juga.</p>";
+    }
+
+    resultText += "<h3>Fun Fact & Insight:</h3><ul>";
+
+    // Fun facts berdasarkan nilai
+    resultText += (scores[0] <= 3)
+      ? "<li>Bahagia itu proses, bukan hasil. Coba cari hal kecil yang bikin kamu senyum hari ini 😊</li>"
+      : "<li>Senang lihat kamu bahagia! Terus cari dan nikmati hal-hal kecil yang bermakna.</li>";
+
+    resultText += (scores[1] <= 3)
+      ? "<li>Energi kamu mungkin sedang menipis. Tubuh juga butuh recharge, loh!</li>"
+      : "<li>Keren! Energi kamu bagus. Jangan lupa seimbangkan dengan waktu istirahat.</li>";
+
+    resultText += (scores[2] <= 3)
+      ? "<li>Rasa didengarkan itu penting. Kalau belum ada tempat curhat, coba journaling dulu. Itu bisa sangat membantu.</li>"
+      : "<li>Rasanya dimengerti itu menyenangkan, ya. Pertahankan koneksi baik ini!</li>";
+
+    resultText += (scores[3] <= 3)
+      ? "<li>Tidur itu kunci kestabilan emosi. Yuk, coba buat rutinitas tidur yang nyaman.</li>"
+      : "<li>Asik! Tidur nyenyak itu aset utama untuk hari yang produktif dan bahagia.</li>";
+
+    resultText += (scores[4] <= 3)
+      ? "<li>Kamu sedang belajar mengelola emosi, dan itu proses yang valid. Jangan ragu untuk minta bantuan kalau butuh.</li>"
+      : "<li>Kemampuan kamu mengelola emosi itu keren! Pertahankan, ya.</li>";
+
+    resultText += "</ul>";
+
+    document.getElementById('result').innerHTML = resultText;
+  });
+</script>
+
+</body>
+</html>
